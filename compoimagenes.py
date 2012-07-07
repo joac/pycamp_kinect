@@ -10,14 +10,12 @@ import os
 
 import cv
 import numpy
-from utils import cv2array
+from utils import load_image_as_array
 
-foreground = cv.LoadImage(os.path.join('data', 'wallpaper.png'), 1)
-foreground = cv2array(foreground) / 255.0
-mask = cv.LoadImage(os.path.join('data', 'mask.png'), 1)
-mask = cv2array(mask) / 255.0
-background = cv.LoadImage(os.path.join('data', 'background.png'), 1)
-background = cv2array(background) / 255.0
+
+foreground = load_image_as_array('wallpaper.png')
+mask = load_image_as_array('mask.png')
+background = load_image_as_array('background.png')
 
 
 def show_video():

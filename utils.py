@@ -1,3 +1,5 @@
+import os
+
 import cv
 import numpy as np
 from scipy import ndimage, misc
@@ -78,3 +80,9 @@ def array2cv(a):
                                  nChannels)
     cv.SetData(cv_im, a.tostring(), a.dtype.itemsize * nChannels * a.shape[1])
     return cv_im
+
+
+def load_image_as_array(img_name):
+    img_cv = cv.LoadImage(os.path.join('data', img_name), 1)
+    img_array = cv2array(img_cv) / 255.0
+    return img_array
