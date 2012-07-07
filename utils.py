@@ -5,11 +5,9 @@ import numpy as np
 from scipy import ndimage, misc
 
 
-background = misc.imread('data/wallpaper.png')
-background = background / 255.0
 _cached = None
 
-def alpha_blend(image):
+def alpha_blend(image, background):
 
     image, alpha = np.dsplit(image, np.array([3]))
     image = image / 255.0

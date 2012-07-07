@@ -3,11 +3,12 @@ import freenect
 import cv
 import frame_convert
 import numpy as np
-from utils import alpha_blend, process_depth, alpha_from_depth
+from utils import alpha_blend, process_depth, alpha_from_depth, load_image_as_array
 
 threshold = 100
 current_depth = 0
 depth = None
+background = load_image_as_array('wallpaper.png')
 
 def change_threshold(value):
     global threshold
@@ -50,7 +51,7 @@ def show_video():
     rgba = alpha_from_depth(video, depth) 
 
     cv.ShowImage('Video', cv.fromarray(video))
-    rgb = alpha_blend(rgba)
+    rgb = alpha_blend(rgba, background)
     cv.ShowImage('Video-proceso', cv.fromarray(rgb))
 
 
