@@ -4,29 +4,23 @@ import cv
 import numpy as np
 from scipy import ndimage, misc
 
-ones = np.ones((480, 640, 3))
+
 background = misc.imread('data/wallpaper.png')
 background = background / 255.0
+_cached = None
 
 def alpha_blend(image):
 
     image, alpha = np.dsplit(image, np.array([3]))
     image = image / 255.0
     alpha = 1 - alpha / 255.0
-    alpha = np.dstack((alpha, alpha, alpha))
-
-    resultado = image * alpha + background * (ones - alpha)
+    resultado = image * alpha + background * (1 - alpha)
     return resultado
-
-
-_cached = None
-
 
 def process_depth(depth):
     global _cached
 
     current = depth / 2047.0
-#    current = depth.astype(np.uint8)
 
     if _cached is not None:
         promedio = (_cached + current) / 2.0
@@ -37,6 +31,12 @@ def process_depth(depth):
     current = depth.astype(np.uint8)
 
     return current
+
+def alpha_from_depth(video, depth):
+    r, g, b = np.dsplit(video, np.array([1,2]))
+    rgba = np.dstack((r, g, b, depth))
+    return rgba
+
 
 def countours_detection(img):
     """Detectar los bordes de la imagen"""
