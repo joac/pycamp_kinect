@@ -6,34 +6,37 @@ from scipy import ndimage, misc
 
 
 _cached = None
+SENSOR_MAX = 2048.0
 
 def alpha_blend(image, background):
+    "Une dos imagenes con opacidad, usando numpy"
 
     image, alpha = np.dsplit(image, np.array([3]))
-    image = image / 255.0
-    alpha = 1 - alpha / 255.0
+    image = image
+    alpha = 1 - alpha 
     resultado = image * alpha + background * (1 - alpha)
     return resultado
 
-def process_depth(depth):
+def process_depth(depth, threshold, current_depth):
     global _cached
 
-    current = depth / 2047.0
+    current = 1 - depth / SENSOR_MAX
 
     if _cached is not None:
         promedio = (_cached + current) / 2.0
         current = promedio 
     _cached = current
 
-    current *= 255
-    current = depth.astype(np.uint8)
+#    current *= 255
+#    current = depth.astype(np.uint8)
 
     return current
 
-def alpha_from_depth(video, depth):
+
+def bgra_from_depth(video, depth):
     r, g, b = np.dsplit(video, np.array([1,2]))
-    rgba = np.dstack((r, g, b, depth))
-    return rgba
+    bgra = np.dstack((b, g, r, depth))
+    return bgra
 
 
 def countours_detection(img):
